@@ -36,7 +36,6 @@ class ProductController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() &&  $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
             $em->persist($product);
             $em->flush();
             return $this->redirectToRoute("product.all");
@@ -58,14 +57,29 @@ class ProductController extends Controller
      * @Route("/product/show/{product}", name="product.show")
      */
     public function show(Product $product) {
-
+        return $this->render("product/show.html.twig", ["product" => $product] );
     }
 
     /**
      * @Route("/product/update/{product}", name="product.update")
      */
-    public function update(Product $product) {
+    public function update(Request $request, Product $product) {
+        $form = $this->createFormBuilder($product)
+            ->add("name", TextType::class)
+            ->add("releaseOn", DateType::class, [
+                "widget" => "single_text"
+            ])
+            ->add("update", SubmitType::class, ["label" => "update Product"])
+            ->getForm();
 
+        $form->handleRequest($request);
+        if ($form->isSubmitted() &&  $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $this->redirectToRoute("product.all");
+        }
+
+        return $this->render("product/update.html.twig", ["form" => $form->createView()]);
     }
 
     /**
