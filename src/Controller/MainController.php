@@ -12,15 +12,8 @@ class MainController extends Controller
      * @Route("/", name="app_home")
      * @Template("main/home.html.twig")
      */
-
     public function homeAction()
     {
-//        return new Response(
-//            "<!doctype html><html><body><h1> Welcome to my website</h1></body></html>"
-//        );
-
-//        return $this->render("main/home.html.twig", ["project_name" => "yourProject"]);
-
         return ["project_name" => "yourProject"];
     }
 }
