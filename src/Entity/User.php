@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -41,6 +43,22 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $plainPassword;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="User", orphanRemoval=true)
+     */
+    private $products;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="user_id")
+     */
+    private $oducts;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+        $this->oducts = new ArrayCollection();
+    }
 
     // ****** fonctions ****** //
     public function getId()
@@ -140,6 +158,68 @@ class User implements UserInterface
         if ($index !== false) {
             array_splice($this->roles, $index, 1);
         }
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->contains($product)) {
+            $this->products->removeElement($product);
+            // set the owning side to null (unless already changed)
+            if ($product->getUser() === $this) {
+                $product->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getOducts(): Collection
+    {
+        return $this->oducts;
+    }
+
+    public function addOduct(Product $oduct): self
+    {
+        if (!$this->oducts->contains($oduct)) {
+            $this->oducts[] = $oduct;
+            $oduct->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOduct(Product $oduct): self
+    {
+        if ($this->oducts->contains($oduct)) {
+            $this->oducts->removeElement($oduct);
+            // set the owning side to null (unless already changed)
+            if ($oduct->getUserId() === $this) {
+                $oduct->setUserId(null);
+            }
+        }
+
+        return $this;
     }
 
 

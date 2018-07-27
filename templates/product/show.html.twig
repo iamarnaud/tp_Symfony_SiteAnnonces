@@ -1,21 +1,52 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <a href="{{ url("product.add") }}">Add</a>
-    <table class="table">
-        <tr>
-            <th>Name</th>
-            <th>Release On</th>
-            <th>Action</th>
-        </tr>
+    <div class="container">
+        <br>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <button type="button" class="btn btn-warning" style="margin-bottom:15px; margin-top: 10px; margin-left: 15px"><a
+                        href={{ url("product.add") }}>Sell something</a></button>
+        {% else %}
+            <button type="button" class="btn btn-warning" style="margin:15px; margin-top:10px; margin-left:15px"><a
+                        href="{{ url("user.register") }}">Sign In</a></button>
+        {% endif %}
 
+        <table class="table">
             <tr>
-                <td>{{ product.name }}</td>
-                <td>{{ product.releaseOn|date }}</td>
-                <td>
-                    <a onclick="return confirm('are you sure?');" href="{{ url("product.delete", {"product":product.id}) }}">Delete</a>
-                </td>
+                <th>Category</th>
+                <th>Produit</th>
+                <th>Picture</th>
+                <th>Release On</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Location</th>
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <th>Seller</th>
+                    <th>Email</th>
+                {% endif %}
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and product.user == user %}
+                    <th>Action</th>
+                {% endif %}
             </tr>
+            <tr>
+                <td>{{ product.category }}</td>
+                <td>{{ product.title }}</td>
+                <td><img src="/uploads/pictures/{{ product.photo }}" alt="" style="width:50px; height:50px"></td>
+                <td>{{ product.releaseOn|date }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.price }} €</td>
+                <td>{{ product.area }}</td>
 
-    </table>
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <td>{{ product.user.username }}</td>
+                    <td>{{ product.user.email }}</td>
+                {% endif %}
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and product.user == user %}
+                    <td><a href="{{ url("product.update", {"product":product.id}) }}">Update</a></td>
+                    <td><a onclick="return confirm('are you sure?');"
+                           href="{{ url("product.delete", {"product":product.id}) }}">Delete</a></td>
+                {% endif %}
+            </tr>
+        </table>
+    </div>
 {% endblock %}

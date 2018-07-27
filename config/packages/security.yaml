@@ -36,12 +36,12 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+
         - { path: ^/signin, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/product, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         #cette ligne doit toujours être en bas :
         - { path: ^/, roles: ROLE_USER }
-
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER

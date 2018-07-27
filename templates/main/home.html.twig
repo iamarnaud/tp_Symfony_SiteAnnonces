@@ -1,5 +1,51 @@
-
 {% extends "base.html.twig" %}
+
 {% block body %}
-    <h1>Welcome to {{ project_name|upper }}.</h1>
+    <div class="wrapper" style="background-color:purple; color: white; height:150px; padding-top:20px">
+        <div class="container">
+            <h1 style="font-weight:lighter">Welcome <span
+                        style="color:gold; font-weight:bold">{{ app.user.username }}</span> !</h1>
+            <h2> site de vente pour destockeur heureux</h2>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <h3> Vos annonces publiées : </h3>
+        <table class="table" style="width:auto; margin-left: 15px">
+            <tr>
+                <th>Product</th>
+                <th>Release On</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+            {% for product in myProducts %}
+                <tr>
+                    <td>{{ product.title }}</td>
+                    <td>{{ product.releaseOn|date }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.price }} €</td>
+                    <td>
+                        <button type="button" class="btn btn-light" style="margin-right:15px"><a
+                                    href="{{ url("product.show", {"product":product.id}) }}">Show</a></button>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">you have nothing to sell yet</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <button type="button" class="btn btn-warning" style="margin:15px; margin-top: 20px; margin-left: 15px">
+                <a href={{ url("product.add") }}>Sell something</a>
+            </button>
+        {% endif %}
+
+        <div style="height: 200px"></div>
+    </div>
+
+
 {% endblock %}

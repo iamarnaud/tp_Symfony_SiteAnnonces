@@ -5,7 +5,7 @@
 ## the "app_hello_world" route name is not important yet
 #app_hello_world:
 #    path: /hello/world
-#    controller: App\Controller\HelloWorldController::hello
+#    controller: App\Controller\SearchController::hello
 
 logout:
    path: /logout

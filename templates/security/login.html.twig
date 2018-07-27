@@ -1,0 +1,37 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div class="wrapper" style="background-color:purple; color: white; height:150px; padding-top:20px">
+        <div class="container">
+            <h1 style="font-weight:lighter">Welcome !</h1>
+            <h2> site de vente pour destockeur heureux</h2>
+        </div>
+    </div>
+    <div class="container">
+        <br>
+        <div style="height: 50px"></div>
+
+        {% if error %}
+            <div style="font-weight: bold; font-size:20px; color:orange">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            <br>
+
+        {% endif %}
+        <h3><b>Connection</b></h3>
+        <form action="{{ path('login') }}" method="post">
+            <label class="col-sm-2" for="username">Username:</label>
+            <input class="col-sm-3" type="text" id="username" name="_username" value="{{ last_username }}"/>
+            <br>
+            <label class="col-sm-2" for="password">Password:</label>
+            <input class="col-sm-3" type="password" id="password" name="_password"/>
+            <div style="height: 15px"></div>
+            <button type="submit" class="btn btn-warning" style="margin-left:15px">login</button>
+        </form>
+
+        <div style="height: 50px"></div>
+
+        <h3><b>Inscription</b></h3>
+        <p>Inscrivez vous pour vendre un produit.</p>
+        <div style="height: 15px"></div>
+        <button type="button" class="btn btn-warning" style="margin:15px; margin-top:10px; margin-left:15px"><a
+                    href="{{ url("user.register") }}">Sign In</a></button>
+    </div>
+{% endblock %}

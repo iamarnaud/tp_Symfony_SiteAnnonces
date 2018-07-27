@@ -1,13 +1,14 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <br>
-    <div class="col-sm-3">
+
+    <div class="container">
+        <br>
+        <h3> Modifiez votre annonce : </h3>
+        <br>
         {{ form_start(form) }}
-        {{ form_label(form.name) }}
-        {{ form_errors(form.name) }}
-        {{ form_widget(form.name) }}
-        {{ form_row(form.releaseOn) }}
+        {{ form(form) }}
+        {{ form_widget(form) }}
         {{ form_end(form) }}
     </div>
     <br>

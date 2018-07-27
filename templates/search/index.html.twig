@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="wrapper" style="background-color:purple; color: white; height:150px; padding-top:20px">
+        <div class="container">
+            <h1 style="font-weight:lighter">What are you looking for <span
+                        style="color:gold; font-weight:bold">{{ app.user.username }}</span></h1>
+            <h2> sur le Destockeur Heureux ?</h2>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="col-sm-3">
+            {{ form_start(form) }}
+            {{ form(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+    <br>
+{% endblock %}
