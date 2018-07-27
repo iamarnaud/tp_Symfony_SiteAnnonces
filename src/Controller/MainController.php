@@ -24,5 +24,4 @@ class MainController extends Controller
 
         return $this->render("main/home.html.twig", ["myProducts" => $myProducts]);
     }
-
 }

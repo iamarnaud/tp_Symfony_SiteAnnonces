@@ -8,13 +8,14 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20180725143423 extends AbstractMigration
+final class Version20180727091903 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'sqlite', 'Migration can only be executed safely on \'sqlite\'.');
 
+        $this->addSql('CREATE TABLE search (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, search VARCHAR(255) DEFAULT NULL, searchbyarea VARCHAR(255) DEFAULT NULL, searchbycategory VARCHAR(255) DEFAULT NULL)');
         $this->addSql('DROP INDEX IDX_D34A04ADA76ED395');
         $this->addSql('CREATE TEMPORARY TABLE __temp__product AS SELECT id, user_id, release_on, title, description, area, category, price, photo, authorized FROM product');
         $this->addSql('DROP TABLE product');
@@ -29,6 +30,7 @@ final class Version20180725143423 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'sqlite', 'Migration can only be executed safely on \'sqlite\'.');
 
+        $this->addSql('DROP TABLE search');
         $this->addSql('DROP INDEX IDX_D34A04ADA76ED395');
         $this->addSql('CREATE TEMPORARY TABLE __temp__product AS SELECT id, user_id, release_on, title, description, area, category, price, photo, authorized FROM product');
         $this->addSql('DROP TABLE product');

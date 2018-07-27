@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Product;
+use App\Entity\Search;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -47,4 +49,22 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getSearchByKeywordsAndLocalisationAndCategory(Search $search, EntityManagerInterface $em)
+    {
+        return $em
+            ->getRepository(Product::class)->createQueryBuilder('p')
+
+            ->andWhere('p.title LIKE :name OR p.description LIKE :name')
+            ->setParameter('name', '%' . $search->getSearch() . '%')
+
+            ->andwhere('p.category LIKE :category')
+            ->setParameter('category', '%' . $search->getSearchbycategory() . '%')
+
+            ->andWhere('p.area LIKE :localisation')
+            ->setParameter('localisation', '%' . $search->getSearchbyarea() . '%')
+
+            ->getQuery()
+            ->execute();
+    }
 }

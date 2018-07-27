@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="wrapper" style="background-color:purple; color: white; height:150px; padding-top:20px">
+        <div class="container">
+            <h1 style="font-weight:lighter">Here your results <span
+                        style="color:gold; font-weight:bold">{{ app.user.username }}</span></h1>
+            <h2> trouvés sur le Destockeur Heureux ?</h2>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <h3> Les produits disponibles : </h3>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <button type="button" class="btn btn-warning" style="margin:15px; margin-top: 20px; margin-left: 15px">
+                <a href={{ url("product.add") }}>Sell something</a>
+            </button>
+        {% endif %}
+
+        <table class="table" style="width:auto; margin-left: 15px">
+            <tr>
+                <th>Product</th>
+                <th>Release On</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+            {% for product in products %}
+                {% if product.authorized %}
+                    <tr>
+                        <td>{{ product.title }}</td>
+                        <td>{{ product.releaseOn|date }}</td>
+                        <td>{{ product.description }}</td>
+                        <td>{{ product.price }} €</td>
+                        <td>
+                            <button type="button" class="btn btn-light"><a
+                                        href="{{ url("product.show", {"product":product.id}) }}">Show</a></button>
+                            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and product.user == user %}
+                                <br>
+                                <button type="button" class="btn btn-light"><a
+                                            href="{{ url("product.update", {"product":product.id}) }}">Update</a>
+                                </button>
+
+                                <button type="button" class="btn btn-light"><a
+                                            onclick="return confirm('are you sure?');"
+                                            href="{{ url("product.delete", {"product":product.id}) }}">Delete</a>
+                                </button>
+                            {% endif %}
+                            <!-- MODERATEUR -->
+                            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <br>
+                            <button type="button" class="btn btn-light"><a
+                                        href="{{ url("product.update", {"product":product.id}) }}">Update</a>
+                            </button>
+
+                            <button type="button" class="btn btn-light"><a
+                                        onclick="return confirm('are you sure?');"
+                                        href="{{ url("product.delete", {"product":product.id}) }}">Delete</a>
+                            </button>
+                            <button type="button" class="btn btn-light"><a
+                                        href="{{ url("product.moderate", {"product":product.id}) }}">Moderate</a>
+                                {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% else %}
+                <tr>
+                    <td colspan="3">No content available</td>
+                </tr>
+
+            {% endfor %}
+        </table>
+    </div>
+    <br>
+{% endblock %}
